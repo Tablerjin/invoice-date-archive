@@ -1,0 +1,13 @@
+# Security and privacy
+
+The server binds only `127.0.0.1` on an ephemeral port. POST actions require a random per-process token, same-origin requests and a loopback Host. The UI supplies this token. Do not forward the port, share the page/token, or expose it through a reverse proxy. Anyone with local process/file access is inside the trust boundary; this is a single-user desktop utility, not a multi-user hardened service.
+
+Project code is MIT licensed. Third-party dependency licenses are separate; notably, PyMuPDF is distributed under AGPL-3.0-or-later or a commercial license and is not bundled here. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the dependency's own license terms before redistributing an installation.
+
+API archive writes must use the configured root. File/event names reject separators and traversal; ZIP extraction validates all member paths and expanded-size limits, flattens selected PDFs, ignores nested archives and validates signatures. Existing trip symlinks escaping the archive are rejected. Open/report actions resolve and validate their configured-root boundary; no arbitrary read-file endpoint is exposed. The native folder picker is an explicit user action on macOS. Do not use untrusted local state or run concurrently with a malicious process modifying archive paths (filesystem races are outside this trust model).
+
+IMAP is read-only and uses TLS certificate validation. Authorization codes go exclusively to the system keyring. Local config contains only non-secrets. Archives, state, cached attachments, generated reports, Notion snapshots and logs are private runtime data. State directories use private permissions; protect backups and the archive with your own filesystem access controls. The optional external maps helper can send place names to its own service. Optional Notion sharing sends only the reviewed projection through the host agent; invoices are not uploaded by the probe.
+
+Reported school names and some ambiguous amounts are heuristics. They require review and never establish a visit, expense approval or official policy. HTML edits are embedded when exported using Download saved HTML; regenerating reports can replace the generated draft, so keep edited exports separately.
+
+Before publishing forks, inspect all tracked files for personal accounts, paths, fiscal identifiers, invoice content and secrets. `.gitignore` is a guardrail, not a credential scanner. Report vulnerabilities privately to the repository maintainer through an available private security reporting channel; never include real invoices or credentials in a public issue.
