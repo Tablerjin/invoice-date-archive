@@ -17,7 +17,8 @@ def test_headless_http_and_duplicate_instance(tmp_path):
     env = dict(os.environ, DATEARCHIVE_STATE_DIR=str(state), DATEARCHIVE_BASE=str(archive), BROWSER='false')
     process = subprocess.Popen([sys.executable, str(root / 'app.py'), '--no-browser'], env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
-        for _ in range(100):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
             if (state / 'url').exists():
                 break
             if process.poll() is not None:
